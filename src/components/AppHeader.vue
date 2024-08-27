@@ -16,8 +16,8 @@ export default {
 </script>
 
 <template>
+    <!-- FILTRO PER LA RICERCA DA PARTE DELL'UTENTE -->
     <FilterMovies />
-    
 </template>
 
 <style lang="scss" scoped>

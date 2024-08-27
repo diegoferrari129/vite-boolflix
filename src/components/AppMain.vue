@@ -12,6 +12,7 @@ export default {
 
 <template>
     <ul>
+        <!-- CICLO PER MOSTRARE I VALORI FILTRATI DELLA CHIAMATA API -->
         <li v-for="movie in store.filteredMovies" :key="movie.id">
             {{ movie.title }}
             {{ movie.original_title }}
