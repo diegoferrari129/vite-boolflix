@@ -1,5 +1,5 @@
 <script>
-import FilterMovies from './FilterMovies.vue';
+import Filter from './Filter.vue';
 import { store } from '../store.js';
 
 export default {
@@ -10,14 +10,14 @@ export default {
     },
 
     components: {
-        FilterMovies,
+        Filter,
     },
 }
 </script>
 
 <template>
     <!-- FILTRO PER LA RICERCA DA PARTE DELL'UTENTE -->
-    <FilterMovies />
+    <Filter />
 </template>
 
 <style lang="scss" scoped>
