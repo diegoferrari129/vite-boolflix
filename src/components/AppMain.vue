@@ -15,6 +15,7 @@ export default {
         <!-- CICLO PER MOSTRARE I VALORI FILTRATI DELLA CHIAMATA API -->
          <!-- movies -->
         <li v-for="movie in store.filteredMovies" :key="movie.id">
+            <img :src="`https://image.tmdb.org/t/p/w342/${movie.poster_path}`">
             {{ movie.title }}
             {{ movie.original_title }}
             <img :src="`/public/flags/${movie.original_language}.png` " />
@@ -23,6 +24,7 @@ export default {
         
         <!-- TV series -->
         <li v-for="show in store.filteredSeries" :key="show.id">
+            <img :src="`https://image.tmdb.org/t/p/w342/${show.poster_path}`">
             {{ show.name }}
             {{ show.original_name }}
             <img :src="`/public/flags/${show.original_language}.png`" />

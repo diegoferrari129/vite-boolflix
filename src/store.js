@@ -8,4 +8,6 @@ export const store = reactive({
     apiSeries: 'https://api.themoviedb.org/3/search/tv?query=expanse&api_key=198b31d198bf714f14e2b9df45bc7311',
     series: [],
     filteredSeries: [],
+
+
 });
