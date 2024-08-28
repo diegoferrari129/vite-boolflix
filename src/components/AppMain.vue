@@ -6,7 +6,6 @@ export default {
         return {
             store,
         }
-        
     },
 }   
 </script>
@@ -18,7 +17,7 @@ export default {
         <li v-for="movie in store.filteredMovies" :key="movie.id">
             {{ movie.title }}
             {{ movie.original_title }}
-            <img :src="`/assets/flags/${movie.original_language}.png`" />
+            <img :src="`/public/flags/${movie.original_language}.png` " />
             {{ movie.vote_average }}
         </li>
         
@@ -26,7 +25,7 @@ export default {
         <li v-for="show in store.filteredSeries" :key="show.id">
             {{ show.name }}
             {{ show.original_name }}
-            <img :src="`/assets/flags/${show.original_language}.png`" />
+            <img :src="`/public/flags/${show.original_language}.png`" />
             {{ show.vote_average }}
         </li>
     </ul>
