@@ -9,43 +9,28 @@ export default {
         }
     },
 
-    created() {
-        this.getMovies()
-        this.getSeries()
-    },
-
     methods: {
         // CHIAMATA API
         // movies
         getMovies() {
-            axios.get(store.apiMovies).then((result) => {
+            axios.get(store.apiMovies+store.searchQuery).then((result) => {
                 store.movies = result.data.results;
+                console.log(store.movies)
             });
+
         },
         // TV series
         getSeries() {
-            axios.get(store.apiSeries).then((result) => {
+            axios.get(store.apiSeries+store.searchQuery).then((result) => {
                 store.series = result.data.results;
+                console.log(store.series)
             });
         },
 
-        // FILTRAGGIO DELLA CHIAMATA API
-        // filter movies
-        searchMovies(){
-            this.store.filteredMovies = this.store.movies.filter(movie => {
-                return movie.title.toLowerCase().includes(this.store.searchQuery.toLowerCase())
-            });
-        },
-        // filter TV series
-        searchSeries(){
-            this.store.filteredSeries = this.store.series.filter(show => {
-                return show.name.toLowerCase().includes(this.store.searchQuery.toLowerCase())
-            });
-        },
         // filter for both movies and TV series
-        filterResults() {
-            this.searchMovies();
-            this.searchSeries();
+        getShows() {
+            this.getMovies();
+            this.getSeries();
         },
     },
 }
@@ -54,7 +39,7 @@ export default {
 <template>
     <!-- INPUT UTENTE PER FILTRARE LE CHIAMATE API TRAMITE L'EVENTO CLICK DI UN BOTTONE-->
     <input type="text" v-model="store.searchQuery" placeholder="Search...">
-    <button @click="filterResults">Filter</button>
+    <button @click="getShows">Filter</button>
 </template>
 
 <style lang="scss" scoped>
