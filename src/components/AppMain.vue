@@ -7,6 +7,15 @@ export default {
             store,
         }
     },
+
+    methods: {
+        roundedVote(movie) {
+            return Math.floor(movie.vote_average);
+        },
+        roundedVote(show) {
+            return Math.floor(show.vote_average);
+        }
+    }
 }   
 </script>
 
@@ -19,7 +28,7 @@ export default {
             {{ movie.title }}
             {{ movie.original_title }}
             <img :src="`/public/flags/${movie.original_language}.png` " />
-            {{ movie.vote_average }}
+            {{ roundedVote(movie) }}
         </li>
         
         <!-- TV series -->
@@ -28,7 +37,7 @@ export default {
             {{ show.name }}
             {{ show.original_name }}
             <img :src="`/public/flags/${show.original_language}.png`" />
-            {{ show.vote_average }}
+            {{ roundedVote(show) }}
         </li>
     </ul>
 </template>
