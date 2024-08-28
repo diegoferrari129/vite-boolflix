@@ -38,9 +38,16 @@ export default {
 
 <template>
     <!-- INPUT UTENTE PER FILTRARE LE CHIAMATE API TRAMITE L'EVENTO CLICK DI UN BOTTONE-->
-    <input type="text" v-model="store.searchQuery" placeholder="Search...">
-    <button @click="getShows">Filter</button>
+    <form class="row">
+        <div class="col-auto">
+            <input type="text" class="form-control" v-model="store.searchQuery" placeholder="Inserisci un titolo...">
+        </div>
+       <div class="col-auto ps-0 pe-3">
+           <button class="btn btn-danger" @click="getShows">Cerca</button>
+       </div>
+    </form>
 </template>
 
 <style lang="scss" scoped>
+
 </style>
