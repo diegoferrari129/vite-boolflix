@@ -1,26 +1,21 @@
 <script>
-import AppHeader from './components/AppHeader.vue';
-import AppMain from './components/AppMain.vue';
-import { store } from './store.js';
+import Header from './components/layout/Header.vue';
+import Main from './components/layout/Main.vue';
 
 export default {
-  data() {
-    return {
-      store
+    name: 'App',
+    components: {
+        Header,
+        Main
     }
-  },
-  components: {
-    AppHeader,
-    AppMain,
-  },
 }
 </script>
 
 <template>
-  <AppHeader />
-  <AppMain />
+    <Header @search="searchMovies"/>
+    <Main />
 </template>
 
 <style lang="scss">
-@use "./styles/general.scss";
+@use './styles/generals.scss' as *;
 </style>
