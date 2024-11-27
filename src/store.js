@@ -2,16 +2,35 @@ import { reactive } from "vue";
 import axios from "axios";
 
 export const store = reactive({
-    apiUrlMovie: "https://api.themoviedb.org/3/search/movie",
-    apiUrlSeries: "https://api.themoviedb.org/3/search/tv",
-    apiUrlPopularSeries: "https://api.themoviedb.org/3/tv/popular",
-    apiUrlPopularMovies: "https://api.themoviedb.org/3/movie/popular",
+
     apiKey: '198b31d198bf714f14e2b9df45bc7311',
+
+    // API per la ricerca dei film
+    apiUrlMovie: "https://api.themoviedb.org/3/search/movie",
+    // API per i film più popolari
+    apiUrlPopularMovies: "https://api.themoviedb.org/3/movie/popular",
+    // API per il cast e i generi dei film
+    apiUrlMovieDetails: "https://api.themoviedb.org/3/movie",
+
+    // API per la ricerca delle serie TV        
+    apiUrlSeries: "https://api.themoviedb.org/3/search/tv",
+    // API per le serie TV più popolari
+    apiUrlPopularSeries: "https://api.themoviedb.org/3/tv/popular",
+    // API per il cast e i generi delle serie TV
+    apiUrlSeriesDetails: "https://api.themoviedb.org/3/tv",
+
     query: "",
+
     movieResults: [],
+    popularMovies: [],
+
     seriesResults: [],
     popularSeries: [],
-    popularMovies: [],
+
+    casts: {},
+    genres: {},
+
+    // Traccia se la ricerca è stata eseguita
     searchExecuted: false,
 
     // Flags delle lingue
@@ -29,6 +48,11 @@ export const store = reactive({
         'pt': '🇵🇹',
         'nl': '🇳🇱',
     },
+    
+    // Metodo per convertire il voto da 1-10 a 1-5 (arrotondato per eccesso)
+    getVote(vote) {
+        return Math.ceil(vote / 2);
+    },
 
     // Metodo per ottenere il flag della lingua
     getFlag(languageCode) {
@@ -38,8 +62,11 @@ export const store = reactive({
         if (this.languageFlags[code]) {
             return `${this.languageFlags[code]} ${code.toUpperCase()}`;
         }
-        
         return code.toUpperCase();
+    },
+    
+    getYear(date) {
+        return new Date(date).getFullYear();
     },
 
     // Metodo per eseguire la ricerca
@@ -95,8 +122,30 @@ export const store = reactive({
             });
     },
 
-    // Metodo per convertire il voto da 1-10 a 1-5 (arrotondato per eccesso)
-    getVote(vote) {
-        return Math.ceil(vote / 2);
-    }
+
+    // Metodo per ottenere il cast
+    getCast(id, type) {
+        const url = type === 'movie' ? this.apiUrlMovieDetails : this.apiUrlSeriesDetails;
+
+        axios.get(`${url}/${id}/credits?api_key=${this.apiKey}&language=it-IT`)
+            .then(response => {
+                this.casts[id] = response.data.cast
+                    .slice(0, 5)
+                    .map(actor => actor.name)
+                    .join(', ');
+            });
+    },
+
+    // Metodo per ottenere i generi
+    getGenres(id, type) {
+        const url = type === 'movie' ? this.apiUrlMovieDetails : this.apiUrlSeriesDetails;
+
+        axios.get(`${url}/${id}?api_key=${this.apiKey}&language=it-IT`)
+            .then(response => {
+                this.genres[id] = response.data.genres
+                    .map(genre => genre.name)
+                    .join(', ');
+            });
+    },
+
 });

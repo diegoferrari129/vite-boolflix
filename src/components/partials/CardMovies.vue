@@ -6,6 +6,13 @@ export default {
         return {
             store,
         };
+    },
+    mounted() {
+        // Ciclo per ottenere il cast e i generi per ogni film
+        store.movieResults.forEach(movie => {
+            store.getCast(movie.id, 'movie');
+            store.getGenres(movie.id, 'movie');
+        });
     }
 }
 </script>
@@ -13,7 +20,7 @@ export default {
 <template>
     <div v-for="movie in store.movieResults" 
         :key="movie.id" 
-        class="col-6 col-md-3">
+        class="col-6 col-md-4 col-lg-3">
         <div class="netflix-card h-100">
             <div class="card-poster">
                 <!-- POSTER -->
@@ -39,7 +46,7 @@ export default {
                     </span>
                     <!-- YEAR -->
                     <span class="year">
-                        {{ new Date(movie.release_date).getFullYear() }}
+                        {{ store.getYear(movie.release_date) }}
                     </span>
                     <!-- LANGUAGE -->
                     <span class="language">
@@ -48,6 +55,12 @@ export default {
                 </div>
                 <!-- OVERVIEW -->
                 <p class="overview">{{ movie.overview }}</p>
+                <div v-if="store.genres[movie.id]" class="info-row">
+                    {{ store.genres[movie.id] }}
+                </div>
+                <div v-if="store.casts[movie.id]" class="info-row">
+                    Cast: {{ store.casts[movie.id] }}
+                </div>
             </div>
         </div>
     </div>
