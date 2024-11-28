@@ -131,8 +131,10 @@ export const store = reactive({
             .then(response => {
                 this.casts[id] = response.data.cast
                     .slice(0, 5)
-                    .map(actor => actor.name)
-                    .join(', ');
+                    .map(actor => ({
+                        name: actor.name,
+                        profile_path: actor.profile_path
+                    }));
             });
     },
 
