@@ -25,7 +25,7 @@ export default {
         },
         showDetails(movie) {
             this.selectedMovie = movie;
-            store.getCast(movie.id, 'movie');
+            store.getCast(movie.id, 'movie', true);
             store.getGenres(movie.id, 'movie');
         }
     },
@@ -231,11 +231,5 @@ export default {
     font-size: 1rem;
     margin: 1rem 0;
     opacity: 0.8;
-}
-
-.section-title {
-    margin-left: 3%;  // Stesso margine dello slider
-    margin-bottom: 2rem;
-    color: #e5e5e5;
 }
 </style> 

@@ -13,6 +13,11 @@ export default {
             store.getCast(series.id, 'tv');
             store.getGenres(series.id, 'tv');
         });
+    },
+    methods: {
+        getCast(id) {
+            store.getCast(id, 'tv');
+        }
     }
 }
 </script>

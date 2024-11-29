@@ -13,6 +13,11 @@ export default {
             store.getCast(movie.id, 'movie');
             store.getGenres(movie.id, 'movie');
         });
+    },
+    methods: {
+        getCast(id) {
+            store.getCast(id, 'movie');
+        }
     }
 }
 </script>

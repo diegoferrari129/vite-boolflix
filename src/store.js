@@ -124,17 +124,24 @@ export const store = reactive({
 
 
     // Metodo per ottenere il cast
-    getCast(id, type) {
+    getCast(id, type, isSlider = false) {
         const url = type === 'movie' ? this.apiUrlMovieDetails : this.apiUrlSeriesDetails;
 
         axios.get(`${url}/${id}/credits?api_key=${this.apiKey}&language=it-IT`)
             .then(response => {
-                this.casts[id] = response.data.cast
-                    .slice(0, 5)
-                    .map(actor => ({
-                        name: actor.name,
-                        profile_path: actor.profile_path
-                    }));
+                if (isSlider) {
+                    this.casts[id] = response.data.cast
+                        .slice(0, 5)
+                        .map(actor => ({
+                            name: actor.name,
+                            profile_path: actor.profile_path
+                        }));
+                } else {
+                    this.casts[id] = response.data.cast
+                        .slice(0, 5)
+                        .map(actor => actor.name)
+                        .join(', ');
+                }
             });
     },
 

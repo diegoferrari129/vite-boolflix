@@ -25,7 +25,7 @@ export default {
         },
         showDetails(series) {
             this.selectedSeries = series;
-            store.getCast(series.id, 'tv');
+            store.getCast(series.id, 'tv', true);
             store.getGenres(series.id, 'tv');
         }
     },
@@ -132,12 +132,6 @@ export default {
 
 <style lang="scss" scoped>
 @import '../../styles/slider-common.scss';
-
-.section-title {
-    margin-left: 3%;  // Stesso margine dello slider
-    margin-bottom: 2rem;
-    color: #e5e5e5;
-}
 
 // Aggiungiamo gli stili per l'off-canvas
 .offcanvas {
