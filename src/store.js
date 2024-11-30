@@ -30,6 +30,8 @@ export const store = reactive({
     casts: {},
     genres: {},
 
+    searchResults: [],
+
     // Traccia se la ricerca è stata eseguita
     searchExecuted: false,
 
@@ -70,44 +72,18 @@ export const store = reactive({
     },
 
     // Metodo per eseguire la ricerca
-    async search(query) {
+    search(query) {
         if (query.length > 0) {
-            this.searchExecuted = true;
-            
-            try {
-                // Ricerca film e serie TV in parallelo
-                const [movieResponse, seriesResponse] = await Promise.all([
-                    axios.get(this.apiUrlMovie, {
-                        params: {
-                            api_key: this.apiKey,
-                            query: query,
-                            language: 'it-IT'
-                        }
-                    }),
-                    // Ricerca serie TV
-                    axios.get(this.apiUrlSeries, {
-                        params: {
-                            api_key: this.apiKey,
-                            query: query,
-                            language: 'it-IT'
-                        }
-                    })
-                ]);
-
-                // Aggiorna i risultati
-                this.movieResults = movieResponse.data.results;
-                this.seriesResults = seriesResponse.data.results;
-                
-            } catch {
-                // In caso di errore, resetta i risultati
-                this.movieResults = [];
-                this.seriesResults = [];
-            }
+            Promise.all([
+                axios.get(`${this.apiUrlMovie}?api_key=${this.apiKey}&query=${query}&language=it-IT`),
+                axios.get(`${this.apiUrlSeries}?api_key=${this.apiKey}&query=${query}&language=it-IT`)
+            ]).then(([movieRes, tvRes]) => {
+                const movies = movieRes.data.results.map(movie => ({...movie, type: 'movie'}));
+                const series = tvRes.data.results.map(series => ({...series, type: 'tv'}));
+                this.searchResults = [...movies, ...series];
+            });
         } else {
-            // Resetta i risultati
-            this.movieResults = [];
-            this.seriesResults = [];
-            this.searchExecuted = false;
+            this.searchResults = [];
         }
     },
 

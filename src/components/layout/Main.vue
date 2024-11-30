@@ -3,6 +3,7 @@ import CardMovies from '../partials/CardMovies.vue';
 import CardSeries from '../partials/CardSeries.vue';
 import PopularSeriesSlider from '../partials/PopularSeriesSlider.vue';
 import PopularMoviesSlider from '../partials/PopularMoviesSlider.vue';
+import SearchCard from '../partials/SearchCard.vue';
 import { store } from '../../store.js';
 
 export default {
@@ -11,7 +12,8 @@ export default {
         CardMovies,
         CardSeries,
         PopularSeriesSlider,
-        PopularMoviesSlider
+        PopularMoviesSlider,
+        SearchCard
     },
     data() {
         return {
@@ -36,35 +38,20 @@ export default {
             </div>
         </section>
 
-        <section id="results" class="results-section" v-if="store.movieResults.length > 0 || store.seriesResults.length > 0">
+        <section id="results" class="results-section" v-if="store.searchResults.length > 0">
             <div class="container">
                 <div class="row gy-2">
                     <!-- Risultati della ricerca -->
                     <div class="col-12" v-if="store.searchExecuted">
-                        
                         <h2 class="text-center bg-success p-2 rounded-2 mt-5">
-                            {{ store.movieResults.length }} Movies and {{ store.seriesResults.length }} TV Series matched your search
+                            {{ store.searchResults.length }} Results matched your search
                         </h2>
-                    
                     </div>
 
-                    <!-- Sezione Film -->
-                    <div class="col-12" v-if="store.movieResults.length > 0">
-                        <div class="mt-2">
-                            <h3 class="fw-bold">Movies</h3>
-                        </div>
+                    <!-- Sezione Risultati Combinati -->
+                    <div class="col-12">
                         <div class="row g-4">
-                            <CardMovies />
-                        </div>
-                    </div>
-
-                    <!-- Sezione Serie TV -->
-                    <div class="col-12" v-if="store.seriesResults.length > 0">
-                        <div class="mt-4">
-                            <h3 class="fw-bold">TV Series</h3>
-                        </div>
-                        <div class="row g-4">
-                            <CardSeries />
+                            <SearchCard />
                         </div>
                     </div>
                 </div>
