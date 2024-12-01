@@ -1,6 +1,4 @@
 <script>
-import CardMovies from '../partials/CardMovies.vue';
-import CardSeries from '../partials/CardSeries.vue';
 import PopularSeriesSlider from '../partials/PopularSeriesSlider.vue';
 import PopularMoviesSlider from '../partials/PopularMoviesSlider.vue';
 import SearchCard from '../partials/SearchCard.vue';
@@ -9,8 +7,6 @@ import { store } from '../../store.js';
 export default {
     name: 'Main',
     components: {
-        CardMovies,
-        CardSeries,
         PopularSeriesSlider,
         PopularMoviesSlider,
         SearchCard
@@ -38,18 +34,25 @@ export default {
             </div>
         </section>
 
-        <section id="results" class="results-section" v-if="store.searchResults.length > 0">
+        <section id="results" class="results-section" v-if="store.searchExecuted">
             <div class="container">
                 <div class="row gy-2">
+                    <!-- Messaggio nessun risultato -->
+                    <div class="col-12" v-if="store.searchResults.length === 0">
+                        <h2 class="text-center bg-danger p-2 rounded-2 mt-5">
+                            No results found
+                        </h2>
+                    </div>
+
                     <!-- Risultati della ricerca -->
-                    <div class="col-12" v-if="store.searchExecuted">
+                    <div class="col-12" v-else>
                         <h2 class="text-center bg-success p-2 rounded-2 mt-5">
                             {{ store.searchResults.length }} Results matched your search
                         </h2>
                     </div>
 
-                    <!-- Sezione Risultati Combinati -->
-                    <div class="col-12">
+                    <!-- Sezione Risultati -->
+                    <div class="col-12" v-if="store.searchResults.length > 0">
                         <div class="row g-4">
                             <SearchCard />
                         </div>

@@ -25,7 +25,7 @@ export default {
         },
         showDetails(movie) {
             this.selectedMovie = movie;
-            store.getCast(movie.id, 'movie', true);
+            store.getCast(movie.id, 'movie');
             store.getGenres(movie.id, 'movie');
         }
     },
