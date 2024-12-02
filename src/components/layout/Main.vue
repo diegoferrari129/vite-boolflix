@@ -2,6 +2,7 @@
 import PopularSeriesSlider from '../partials/PopularSeriesSlider.vue';
 import PopularMoviesSlider from '../partials/PopularMoviesSlider.vue';
 import SearchCard from '../partials/SearchCard.vue';
+import FilterBar from '../partials/FilterBar.vue';
 import { store } from '../../store.js';
 
 export default {
@@ -9,7 +10,8 @@ export default {
     components: {
         PopularSeriesSlider,
         PopularMoviesSlider,
-        SearchCard
+        SearchCard,
+        FilterBar
     },
     data() {
         return {
@@ -36,19 +38,24 @@ export default {
 
         <section id="results" class="results-section" v-if="store.searchExecuted">
             <div class="container">
+                <FilterBar />
                 <div class="row gy-2">
                     <!-- Messaggio nessun risultato -->
                     <div class="col-12" v-if="store.searchResults.length === 0">
-                        <h2 class="text-center bg-danger p-2 rounded-2 mt-5">
-                            No results found
-                        </h2>
+                        <div class="results-message error">
+                            <i class="fa-solid fa-circle-exclamation"></i>
+                            <h2>No results found</h2>
+                            <p>Try adjusting your search criteria</p>
+                        </div>
                     </div>
 
                     <!-- Risultati della ricerca -->
                     <div class="col-12" v-else>
-                        <h2 class="text-center bg-success p-2 rounded-2 mt-5">
-                            {{ store.searchResults.length }} Results matched your search
-                        </h2>
+                        <div class="results-message success">
+                            <i class="fa-solid fa-circle-check"></i>
+                            <h2>{{ store.searchResults.length }} Results found</h2>
+                            <p>Showing all matches for your search</p>
+                        </div>
                     </div>
 
                     <!-- Sezione Risultati -->

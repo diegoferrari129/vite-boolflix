@@ -1,13 +1,16 @@
 <script>
 import { store } from '../../store.js';
+import DetailsOffcanvas from './DetailsOffcanvas.vue';
 
 export default {
     name: 'PopularSeriesSlider',
+    components: {
+        DetailsOffcanvas
+    },
     data() {
         return {
             store,
-            currentIndex: 0,
-            selectedSeries: null
+            currentIndex: 0
         }
     },
     methods: {
@@ -23,10 +26,9 @@ export default {
                 this.currentIndex = (this.currentIndex + 1) % this.store.popularSeries.length;
             }
         },
-        showDetails(series) {
-            this.selectedSeries = series;
-            store.getCast(series.id, 'tv', true);
-            store.getGenres(series.id, 'tv');
+        showDetails(item) {
+            store.selectedCardDetails = item;
+            store.getCast(item.id, 'tv');
         }
     },
     mounted() {
@@ -86,7 +88,7 @@ export default {
                                                 <i class="fas fa-play"></i>
                                                 Play
                                             </button>
-                                            <button class="btn-more" @click="showDetails(store.popularSeries[currentIndex])" data-bs-toggle="offcanvas" data-bs-target="#seriesDetails">
+                                            <button class="btn-more" @click="showDetails(store.popularSeries[currentIndex])" data-bs-toggle="offcanvas" data-bs-target="#searchDetails">
                                                 <i class="fas fa-info-circle"></i>
                                                 More
                                             </button>
@@ -106,128 +108,9 @@ export default {
         </div>
     </div>
 
-    <!-- Aggiungiamo l'off-canvas -->
-    <div class="offcanvas offcanvas-bottom h-50" id="seriesDetails" tabindex="-1">
-        <div class="offcanvas-header">
-            <h5 class="offcanvas-title" v-if="selectedSeries">{{ selectedSeries.name }}</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
-        </div>
-        <div class="offcanvas-body" v-if="selectedSeries">
-            <div v-if="store.casts[selectedSeries.id]" class="cast-info">
-                <h6>Cast:</h6>
-                <div class="cast-grid">
-                    <div v-for="actor in store.casts[selectedSeries.id]" :key="actor.name" class="actor-card">
-                        <img 
-                            :src="actor.profile_path ? `https://image.tmdb.org/t/p/w185${actor.profile_path}` : 'https://via.placeholder.com/185x278?text=No+Image'" 
-                            :alt="actor.name"
-                            class="actor-image"
-                        >
-                        <p class="actor-name">{{ actor.name }}</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    <DetailsOffcanvas />
 </template>
 
 <style lang="scss" scoped>
 @import '../../styles/slider-common.scss';
-
-// Aggiungiamo gli stili per l'off-canvas
-.offcanvas {
-    background: linear-gradient(to bottom, #141414, #242424);
-    color: white;
-    border-top-left-radius: 16px;
-    border-top-right-radius: 16px;
-    text-align: center;
-    
-    &-header {
-        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        padding: 1.5rem;
-        display: flex;
-        justify-content: center;
-        position: relative;
-
-        .offcanvas-title {
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: white;
-        }
-
-        .btn-close {
-            filter: invert(1) grayscale(100%) brightness(200%);
-            position: absolute;
-            right: 1.5rem;
-        }
-    }
-
-    &-body {
-        padding: 1.5rem;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        
-        h6 {
-            font-size: 1.2rem;
-            font-weight: bold;
-            color: #e5e5e5;
-            margin-bottom: 1rem;
-        }
-    }
-}
-
-.cast-grid {
-    display: flex;
-    gap: 1.5rem;
-    overflow-x: auto;
-    padding: 0.5rem 0;
-    margin-bottom: 2rem;
-    justify-content: center;
-    width: 100%;
-
-    &::-webkit-scrollbar {
-        height: 8px;
-    }
-
-    &::-webkit-scrollbar-track {
-        background: rgba(255, 255, 255, 0.1);
-        border-radius: 4px;
-    }
-
-    &::-webkit-scrollbar-thumb {
-        background: rgba(255, 255, 255, 0.3);
-        border-radius: 4px;
-        
-        &:hover {
-            background: rgba(255, 255, 255, 0.5);
-        }
-    }
-}
-
-.actor-card {
-    flex: 0 0 auto;
-    text-align: center;
-    width: 120px;
-
-    .actor-image {
-        width: 100%;
-        height: 180px;
-        object-fit: cover;
-        border-radius: 8px;
-        margin-bottom: 0.8rem;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-        transition: transform 0.2s;
-
-        &:hover {
-            transform: scale(1.05);
-        }
-    }
-
-    .actor-name {
-        font-size: 0.9rem;
-        margin: 0;
-        color: #e5e5e5;
-        font-weight: 500;
-    }
-}
 </style> 

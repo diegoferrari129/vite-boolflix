@@ -1,11 +1,5 @@
 <template>
-    <!-- Mostra questo se non ci sono risultati ma la ricerca è stata fatta -->
-    <div v-if="store.searchExecuted && store.searchResults.length === 0" class="no-results">
-        <h3>Nessun risultato trovato</h3>
-    </div>
-
-    <!-- Resto del template con i risultati -->
-    <div v-for="item in store.searchResults" 
+    <div v-for="item in filteredResults" 
         :key="item.id" 
         class="col-6 col-md-4 col-lg-3">
         <div class="netflix-card h-100">
@@ -23,8 +17,7 @@
                     <span class="rating">
                         <i v-for="n in 5" 
                             :key="n" 
-                            class="fas fa-star" 
-                            :class="{ 'filled': n <= store.getVote(item.vote_average) }">
+                            :class="n <= store.getVote(item.vote_average) ? 'fa-solid fa-star' : 'fa-regular fa-star'">
                         </i>
                     </span>
                     <span class="year">
@@ -48,51 +41,30 @@
         </div>
     </div>
 
-    <!-- Off-canvas -->
-    <div class="offcanvas offcanvas-bottom h-50" tabindex="-1" id="searchDetails">
-        <div class="offcanvas-header">
-            <h5 class="offcanvas-title" v-if="selectedItem">
-                {{ selectedItem.title || selectedItem.name }}
-            </h5>
-            <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
-        </div>
-        <div class="offcanvas-body" v-if="selectedItem">
-            <div v-if="store.casts[selectedItem.id]" class="cast-info">
-                <h6>Cast:</h6>
-                <div class="cast-grid">
-                    <div v-for="actor in store.casts[selectedItem.id]" :key="actor.name" class="actor-card">
-                        <img 
-                            :src="actor.profile_path ? `https://image.tmdb.org/t/p/w185${actor.profile_path}` : 'https://via.placeholder.com/185x278?text=No+Image'" 
-                            :alt="actor.name"
-                            class="actor-image"
-                        >
-                        <p class="actor-name">{{ actor.name }}</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    <DetailsOffcanvas />
 </template>
 
 <script>
 import { store } from '../../store.js';
+import DetailsOffcanvas from './DetailsOffcanvas.vue';
 
 export default {
-    name: 'SearchCard',
+    components: {
+        DetailsOffcanvas
+    },
     data() {
         return {
-            store,
-            selectedItem: null
+            store
         }
     },
-    mounted() {
-        store.searchResults.forEach(item => {
-            store.getGenres(item.id, item.type);
-        });
+    computed: {
+        filteredResults() {
+            return store.getFilteredResults();
+        }
     },
     methods: {
         showDetails(item) {
-            this.selectedItem = item;
+            store.selectedCardDetails = item;
             store.getCast(item.id, item.type);
         }
     }
@@ -100,39 +72,15 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@use '../../styles/_colors' as *;
 @import '../../styles/cards-common.scss';
 
-.cast-info {
-    .cast-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-        gap: 1rem;
-        padding: 1rem;
+.rating {
+    .fa-star.fa-solid {
+        color: #ffd700 !important;  // stelle piene gialle
     }
-
-    .actor-card {
-        text-align: center;
-
-        .actor-image {
-            width: 100%;
-            height: auto;
-            border-radius: 8px;
-            margin-bottom: 0.5rem;
-        }
-
-        .actor-name {
-            font-size: 0.9rem;
-            margin: 0;
-        }
-    }
-}
-
-.offcanvas {
-    background-color: #141414;
-    color: white;
-
-    .btn-close {
-        filter: invert(1);
+    .fa-star.fa-regular {
+        color: #666;     // stelle vuote grigie
     }
 }
 
@@ -169,20 +117,13 @@ export default {
 
     .genres {
         font-size: 0.9rem;
-        color: #00b300;  // verde per i generi
+        color: #00b300;
         margin: 0.5rem 0;
         font-weight: 500;
     }
 
     .overview {
-        margin-top: 0.5rem;  // spazio dopo i generi
-        // ... resto degli stili dell'overview ...
+        margin-top: 0.5rem;
     }
-}
-
-.no-results {
-    text-align: center;
-    padding: 2rem;
-    color: white;
 }
 </style> 

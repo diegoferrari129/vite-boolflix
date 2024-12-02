@@ -33,6 +33,8 @@ export const store = reactive({
     query: "",
     // Array per i risultati della ricerca
     searchResults: [],
+    // Filtro
+    activeFilter: 'all',
     // Traccia se la ricerca è stata eseguita
     searchExecuted: false,
 
@@ -60,6 +62,7 @@ export const store = reactive({
     // Metodo per ottenere il flag della lingua
     getFlag(languageCode) {
         if (!languageCode) return 'N/A';
+        // Ritorna il flag della lingua se presente, altrimenti ritorna la lingua in maiuscolo
         return this.languageFlags[languageCode.toLowerCase()] || languageCode.toUpperCase();
     },
     
@@ -71,20 +74,16 @@ export const store = reactive({
     // Metodo per eseguire la ricerca
     search(query) {
         if (query.length > 0) {
-            // Chiamata per i film
-            axios.get(`${this.apiUrlMovie}?api_key=${this.apiKey}&query=${query}&language=it-IT`).then((response) => {
-                this.searchResults = response.data.results;
+            Promise.all([
+                axios.get(`${this.apiUrlMovie}?api_key=${this.apiKey}&query=${query}`),
+                axios.get(`${this.apiUrlSeries}?api_key=${this.apiKey}&query=${query}`)
+            ]).then(([movieRes, tvRes]) => {
+                this.searchResults = [...movieRes.data.results, ...tvRes.data.results];
                 this.searchExecuted = true;
             });
-
-            // Chiamata per le serie
-            axios.get(`${this.apiUrlSeries}?api_key=${this.apiKey}&query=${query}&language=it-IT`).then((response) => {
-                this.searchResults = this.searchResults.concat(response.data.results);
-            });
-            
         } else {
             this.searchResults = [];
-            this.searchExecuted = false; 
+            this.searchExecuted = false;
         }
     },
 
@@ -93,7 +92,7 @@ export const store = reactive({
         const url = type === 'series' ? this.apiUrlPopularSeries : this.apiUrlPopularMovies;
         const target = type === 'series' ? 'popularSeries' : 'popularMovies';
         
-        return axios.get(`${url}?api_key=${this.apiKey}&language=it-IT`).then(response => {
+        return axios.get(`${url}?api_key=${this.apiKey}`).then(response => {
             this[target] = response.data.results;
         });
     },
@@ -102,9 +101,11 @@ export const store = reactive({
     getCast(id, type) {
         const url = type === 'movie' ? this.apiUrlMovieDetails : this.apiUrlSeriesDetails;
 
-        return axios.get(`${url}/${id}/credits?api_key=${this.apiKey}&language=it-IT`).then(response => {
+        return axios.get(`${url}/${id}/credits?api_key=${this.apiKey}`).then(response => {
+            // Aggiunge i primi 5 attori al cast
             this.casts[id] = response.data.cast.slice(0, 5).map(actor => ({
-                name: actor.name, profile_path: actor.profile_path
+                name: actor.name,
+                profile_path: actor.profile_path,
             }));
         });
     },
@@ -113,9 +114,21 @@ export const store = reactive({
     getGenres(id, type) {
         const url = type === 'movie' ? this.apiUrlMovieDetails : this.apiUrlSeriesDetails;
 
-        return axios.get(`${url}/${id}?api_key=${this.apiKey}&language=it-IT`).then(response => {
+        return axios.get(`${url}/${id}?api_key=${this.apiKey}`).then(response => {
+            // Aggiunge i generi del film in formato stringa
             this.genres[id] = response.data.genres.map(genre => genre.name).join(', ');
         });
     },
+
+    getFilteredResults() {
+        if (this.activeFilter === 'all') return this.searchResults;
+        return this.searchResults.filter(item => {
+            if (this.activeFilter === 'movie') {
+                return item.first_air_date === undefined;
+            } else {
+                return item.first_air_date !== undefined;
+            }
+        });
+    }
 
 });
