@@ -29,13 +29,9 @@ export default {
         return {
             store
         }
-    },
-    mounted() {
-        store.getAllGenres();
     }
 }
 </script>
-
 <style lang="scss" scoped>
 .filter-bar {
     display: flex;

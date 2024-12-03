@@ -65,8 +65,16 @@ export default {
     methods: {
         showDetails(item) {
             store.selectedCardDetails = item;
-            store.getCast(item.id, item.type);
+            const mediaType = item.first_air_date ? 'tv' : 'movie';
+            store.getCast(item.id, mediaType);
         }
+    },
+    mounted() {
+        // Per ogni item nei risultati, carica i suoi generi
+        this.filteredResults.forEach(item => {
+            const mediaType = item.first_air_date ? 'tv' : 'movie';
+            store.getGenres(item.id, mediaType);
+        });
     }
 }
 </script>

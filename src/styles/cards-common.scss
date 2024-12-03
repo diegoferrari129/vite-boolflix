@@ -6,6 +6,18 @@
     position: relative;
     transition: transform $transition-speed ease;
     cursor: pointer;
+    background-color: $bg-card;
+    border-radius: $border-radius;
+    overflow: hidden;
+
+    &::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background-color: $bg-card;
+        border-radius: $border-radius;
+        z-index: -1;
+    }
 
     &:hover {
         transform: scale(1.05);
@@ -25,6 +37,8 @@
         img {
             object-fit: cover;
             border-radius: $border-radius;
+            width: 100%;
+            height: 100%;
 
             &.placeholder {
                 object-fit: contain;
@@ -81,5 +95,40 @@
             margin-bottom: $spacing-sm;
             font-style: italic;
         }
+
+        .btn-wrapper {
+            display: flex;
+            justify-content: center;
+            margin-top: auto;
+
+            .btn-more {
+                background-color: rgba(255, 255, 255, 0.1);
+                border: none;
+                color: $text-light;
+                padding: $spacing-xs $spacing-sm;
+                border-radius: $border-radius;
+                display: flex;
+                align-items: center;
+                gap: $spacing-xs;
+                transition: background-color $transition-speed;
+
+                &:hover {
+                    background-color: rgba(255, 255, 255, 0.2);
+                }
+
+                i {
+                    font-size: $font-md;
+                }
+            }
+        }
     }
-} 
+}
+
+.rating {
+    .fa-star.fa-solid {
+        color: #ffd700 !important;
+    }
+    .fa-star.fa-regular {
+        color: #666;
+    }
+}

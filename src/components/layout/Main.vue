@@ -3,6 +3,7 @@ import PopularSeriesSlider from '../partials/PopularSeriesSlider.vue';
 import PopularMoviesSlider from '../partials/PopularMoviesSlider.vue';
 import SearchCard from '../partials/SearchCard.vue';
 import FilterBar from '../partials/FilterBar.vue';
+
 import { store } from '../../store.js';
 
 export default {
@@ -16,6 +17,11 @@ export default {
     data() {
         return {
             store
+        }
+    },
+    computed: {
+        filteredResults() {
+            return store.getFilteredResults();
         }
     }
 }
@@ -41,11 +47,11 @@ export default {
                 <FilterBar />
                 <div class="row gy-2">
                     <!-- Messaggio nessun risultato -->
-                    <div class="col-12" v-if="store.searchResults.length === 0">
+                    <div class="col-12" v-if="filteredResults.length === 0">
                         <div class="results-message error">
                             <i class="fa-solid fa-circle-exclamation"></i>
                             <h2>No results found</h2>
-                            <p>Try adjusting your search criteria</p>
+                            <p>Try adjusting your search criteria or filters</p>
                         </div>
                     </div>
 
@@ -53,15 +59,19 @@ export default {
                     <div class="col-12" v-else>
                         <div class="results-message success">
                             <i class="fa-solid fa-circle-check"></i>
-                            <h2>{{ store.searchResults.length }} Results found</h2>
-                            <p>Showing all matches for your search</p>
+                            <h2>{{ filteredResults.length }} Results found</h2>
+                            <p>Showing {{ store.activeFilter === 'all' ? 'all content' : 
+                                store.activeFilter === 'movie' ? 'movies only' : 
+                                'TV series only' }}</p>
                         </div>
                     </div>
 
                     <!-- Sezione Risultati -->
-                    <div class="col-12" v-if="store.searchResults.length > 0">
+                    <div class="col-12" v-if="filteredResults.length > 0">
                         <div class="row g-4">
-                            <SearchCard />
+                            <SearchCard v-for="item in filteredResults" 
+                                :key="item.id" 
+                                :item="item" />
                         </div>
                     </div>
                 </div>
