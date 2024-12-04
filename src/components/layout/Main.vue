@@ -47,22 +47,22 @@ export default {
         <section id="results" class="results-section" v-if="store.searchExecuted">
             <div class="container">
                 <FilterBar />
-                <div class="row gy-2">
+                <div class="row justify-content-center">
                     <!-- Messaggio nessun risultato -->
-                    <div class="col-12" v-if="filteredResults.length === 0">
-                        <div class="results-message error">
-                            <i class="fa-solid fa-circle-exclamation"></i>
-                            <h2>No results found</h2>
-                            <p>Try adjusting your search criteria or filters</p>
+                    <div class="col-12 col-md-8 col-lg-6 mb-4" v-if="filteredResults.length === 0">
+                        <div class="results-message error text-center p-4 rounded">
+                            <i class="fa-solid fa-circle-exclamation fs-1 mb-3"></i>
+                            <h2 class="fs-4 mb-2">No results found</h2>
+                            <p class="text-muted m-0">Try adjusting your search criteria or filters</p>
                         </div>
                     </div>
 
                     <!-- Risultati della ricerca -->
-                    <div class="col-12" v-else>
-                        <div class="results-message success">
-                            <i class="fa-solid fa-circle-check"></i>
-                            <h2>{{ filteredResults.length }} Results found</h2>
-                            <p>Showing {{ store.activeFilter === 'all' ? 'all content' : 
+                    <div class="col-12 col-md-8 col-lg-6 mb-4" v-else>
+                        <div class="results-message success text-center p-4 rounded">
+                            <i class="fa-solid fa-circle-check fs-1 mb-3"></i>
+                            <h2 class="fs-4 mb-2">{{ filteredResults.length }} Results found</h2>
+                            <p class="text-muted m-0">Showing {{ store.activeFilter === 'all' ? 'all content' : 
                                 store.activeFilter === 'movie' ? 'movies only' : 
                                 'TV series only' }}</p>
                         </div>
@@ -71,9 +71,7 @@ export default {
                     <!-- Sezione Risultati -->
                     <div class="col-12" v-if="filteredResults.length > 0">
                         <div class="row g-4">
-                            <SearchCard v-for="item in filteredResults" 
-                                :key="item.id" 
-                                :item="item" />
+                            <SearchCard />
                         </div>
                     </div>
                 </div>
@@ -99,9 +97,23 @@ main {
 .results-section {
     padding: $spacing-lg 0;
     color: $text-light;
+    scroll-margin-top: 80px;
 
-    h2, h3 {
-        margin-bottom: $spacing-lg;
+    .results-message {
+        background-color: rgba($text-light, 0.05);
+        transition: all $transition-speed;
+
+        i {
+            display: block;
+        }
+
+        &.success i {
+            color: #46d369;
+        }
+
+        &.error i {
+            color: $netflix-red;
+        }
     }
 }
 </style>
