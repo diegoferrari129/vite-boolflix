@@ -1,16 +1,13 @@
-@mixin card-hover {
-    transform: scale(1.05);
-    z-index: 2;
-}
-
+// OVERLAY CARD
 @mixin overlay-gradient {
     background: linear-gradient(
         77deg,
-        rgba(0,0,0,.9) 0,
-        rgba(0,0,0,.7) 85%
+        rgba(0, 0, 0, 0.9) 0,
+        rgba(0, 0, 0, 0.7) 85%
     );
 }
 
+// BUTTON STYLE
 @mixin netflix-button {
     background-color: $netflix-red;
     color: $text-light;

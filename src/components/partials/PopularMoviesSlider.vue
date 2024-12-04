@@ -14,6 +14,7 @@ export default {
         }
     },
     methods: {
+        //SLIDER
         nextSlide() {
             if (this.store.popularMovies && this.store.popularMovies.length) {
                 this.currentIndex = (this.currentIndex === 0 
@@ -26,12 +27,15 @@ export default {
                 this.currentIndex = (this.currentIndex + 1) % this.store.popularMovies.length;
             }
         },
+
+        //RECUPERO Il CAST
         showDetails(item) {
             store.selectedCardDetails = item;
             store.getCast(item.id, 'movie');
         }
     },
     mounted() {
+        //RECUPERO I FILM POPOLARI
         this.store.getPopular('movies');
     }
 }
@@ -42,10 +46,13 @@ export default {
         <div class="container-fluid">
             <div class="row">
                 <div class="col-12">
-                    <h2 class="section-title">Popular Movies</h2>
+                    <!-- TITLE -->
+                    <h2 class="section-title mb-4">Popular Movies</h2>
                     
+                    <!-- SLIDER -->
                     <div v-if="store.popularMovies && store.popularMovies.length > 0" class="slider-content">
-                        <button class="handle handle-prev" @click="prevSlide">
+                        <!-- PREV BUTTON -->
+                        <button class="handle handle-prev d-flex align-items-center justify-content-center" @click="prevSlide">
                             <i class="fas fa-chevron-left"></i>
                         </button>
                         
@@ -54,39 +61,52 @@ export default {
                                 <div class="backdrop" 
                                     :style="{ backgroundImage: `url(https://image.tmdb.org/t/p/original${store.popularMovies[currentIndex].backdrop_path})` }">
                                 </div>
-                                <div class="content-wrapper">
+                                <div class="content-wrapper d-flex align-items-center">
+                                    <!-- CONTENT -->
                                     <div class="content">
-                                        <h1>{{ store.popularMovies[currentIndex].title }}</h1>
-                                        <div class="original-title" v-if="store.popularMovies[currentIndex].title !== store.popularMovies[currentIndex].original_title">
+                                        <!-- TITLE -->
+                                        <h1 class="mb-2">{{ store.popularMovies[currentIndex].title }}</h1>
+                                        <!-- ORIGINAL TITLE -->
+                                        <div class="original-title fst-italic mb-3" v-if="store.popularMovies[currentIndex].title !== store.popularMovies[currentIndex].original_title">
                                             {{ store.popularMovies[currentIndex].original_title }}
                                         </div>
                                         
-                                        <div class="metadata">
-                                            <span class="rating">
+                                        <div class="metadata mb-3">
+                                            <span class="rating me-3">
+                                                <!-- VOTE -->
                                                 <i v-for="n in 5" :key="n" 
                                                     class="fas fa-star" 
                                                     :class="{ 'filled': n <= store.getVote(store.popularMovies[currentIndex].vote_average) }">
                                                 </i>
                                             </span>
-                                            <span class="year">
+                                            <!-- YEAR -->
+                                            <span class="year me-3">
                                                 {{ store.getYear(store.popularMovies[currentIndex].release_date) }}
                                             </span>
+                                            <!-- LANGUAGE -->
                                             <span class="language">
                                                 {{ store.getFlag(store.popularMovies[currentIndex].original_language) }}
                                             </span>
                                         </div>
-                                        <div v-if="store.genres[store.popularMovies[currentIndex].id]" class="genres">
+
+                                        <!-- GENRES -->
+                                        <div v-if="store.genres[store.popularMovies[currentIndex].id]" class="genres mb-3">
                                             {{ store.genres[store.popularMovies[currentIndex].id] }}
                                         </div>
-                                        <p class="overview">{{ store.popularMovies[currentIndex].overview }}</p>
+
+                                        <!-- OVERVIEW -->
+                                        <p class="overview mb-3">{{ store.popularMovies[currentIndex].overview }}</p>
                                         
-                                        <div class="buttons">
-                                            <button class="btn-play">
-                                                <i class="fas fa-play"></i>
+                                        <!-- BUTTONS -->
+                                        <div class="buttons d-flex gap-3">
+                                            <!-- PLAY -->
+                                            <button class="btn-play d-flex align-items-center">
+                                                <i class="fas fa-play me-2"></i>
                                                 Play
                                             </button>
-                                            <button class="btn-more" @click="showDetails(store.popularMovies[currentIndex])" data-bs-toggle="offcanvas" data-bs-target="#searchDetails">
-                                                <i class="fas fa-info-circle"></i>
+                                            <!-- MORE -->
+                                            <button class="btn-more d-flex align-items-center" @click="showDetails(store.popularMovies[currentIndex])" data-bs-toggle="offcanvas" data-bs-target="#searchDetails">
+                                                <i class="fas fa-info-circle me-2"></i>
                                                 More
                                             </button>
                                         </div>
@@ -95,7 +115,8 @@ export default {
                             </div>
                         </div>
 
-                        <button class="handle handle-next" @click="nextSlide">
+                        <!-- NEXT BUTTON -->
+                        <button class="handle handle-next d-flex align-items-center justify-content-center" @click="nextSlide">
                             <i class="fas fa-chevron-right"></i>
                         </button>
                     </div>
@@ -104,6 +125,7 @@ export default {
         </div>
     </div>
 
+    <!-- CAST -->
     <DetailsOffcanvas />
 </template>
 

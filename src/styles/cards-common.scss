@@ -2,33 +2,23 @@
 @use 'colors' as *;
 @import './mixins';
 
-.netflix-card {
+// CARD
+.boolflix-card {
     position: relative;
     transition: transform $transition-speed ease;
     cursor: pointer;
-    background-color: $bg-card;
-    border-radius: $border-radius;
-    overflow: hidden;
-
-    &::before {
-        content: '';
-        position: absolute;
-        inset: 0;
-        background-color: $bg-card;
-        border-radius: $border-radius;
-        z-index: -1;
-    }
 
     &:hover {
         transform: scale(1.05);
         z-index: 2;
-
+        
         .card-info {
             opacity: 1;
             visibility: visible;
         }
     }
 
+    // POSTER
     .card-poster {
         height: $card-height;
         background-color: $bg-card;
@@ -37,8 +27,6 @@
         img {
             object-fit: cover;
             border-radius: $border-radius;
-            width: 100%;
-            height: 100%;
 
             &.placeholder {
                 object-fit: contain;
@@ -48,6 +36,7 @@
         }
     }
 
+    // CONTENT
     .card-info {
         position: absolute;
         inset: 0;
@@ -60,75 +49,38 @@
         border-radius: $border-radius;
         overflow: auto;
 
-        h3 {
-            font-size: $font-md;
-            margin-bottom: $spacing-sm;
-        }
-
-        .metadata {
-            margin-bottom: $spacing-sm;
-            font-size: $font-xs;
-            
-            span {
-                margin-right: $spacing-md;
+        // RATING
+        .rating {
+            .fa-star.fa-solid {
+                color: #ffd700 !important;
             }
-
-            .rating i {
-                color: $star-empty;
-                margin-right: $spacing-xs;
-                
-                &.filled {
-                    color: $star-filled;
-                }
+            .fa-star.fa-regular {
+                color: #666;
             }
         }
 
-        .overview {
-            font-size: $font-xs;
-            line-height: 1.5;
-            opacity: 0.8;
-        }
+        // MORE BUTTON
+        .btn-more {
+            background-color: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            transition: background-color 0.3s;
 
-        .original-title {
-            font-size: $font-xs;
-            color: $text-muted;
-            margin-bottom: $spacing-sm;
-            font-style: italic;
-        }
+            &:hover {
+                background-color: rgba(255, 255, 255, 0.2);
+            }
 
-        .btn-wrapper {
-            display: flex;
-            justify-content: center;
-            margin-top: auto;
-
-            .btn-more {
-                background-color: rgba(255, 255, 255, 0.1);
-                border: none;
-                color: $text-light;
-                padding: $spacing-xs $spacing-sm;
-                border-radius: $border-radius;
-                display: flex;
-                align-items: center;
-                gap: $spacing-xs;
-                transition: background-color $transition-speed;
-
-                &:hover {
-                    background-color: rgba(255, 255, 255, 0.2);
-                }
-
-                i {
-                    font-size: $font-md;
-                }
+            i {
+                font-size: 1.2rem;
             }
         }
-    }
-}
 
-.rating {
-    .fa-star.fa-solid {
-        color: #ffd700 !important;
-    }
-    .fa-star.fa-regular {
-        color: #666;
+        // GENRES
+        .genres {
+            font-size: 0.9rem;
+            color: #00b300;
+        }
     }
 }

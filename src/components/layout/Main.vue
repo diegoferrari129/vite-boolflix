@@ -35,6 +35,8 @@ export default {
                     <div class="col-12">
                         <div class="mt-4">
                             <PopularMoviesSlider />
+                        </div>
+                        <div class="mt-5">
                             <PopularSeriesSlider />
                         </div>
                     </div>

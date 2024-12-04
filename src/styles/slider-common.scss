@@ -7,10 +7,8 @@
     position: relative;
     background-color: #141414;
     padding: 0;
-    margin-bottom: 20px;
 
     .section-title {
-        margin-bottom: 2rem;
         color: #e5e5e5;
         font-size: 1.3vw;
         font-weight: bold;
@@ -62,8 +60,6 @@
             position: relative;
             height: 100%;
             padding: 0 4%;
-            display: flex;
-            align-items: center;
         }
 
         .content {
@@ -73,16 +69,10 @@
             
             h1 {
                 font-size: $font-lg;
-                margin-bottom: $spacing-sm;
             }
 
             .metadata {
-                margin-bottom: 0.8vw;
                 font-size: 1vw;
-                
-                span {
-                    margin-right: 1em;
-                }
 
                 .rating {
                     color: #46d369;
@@ -92,13 +82,9 @@
             .overview {
                 font-size: $font-sm;
                 line-height: 1.5;
-                margin-bottom: $spacing-md;
             }
 
             .buttons {
-                display: flex;
-                gap: $spacing-md;
-
                 button {
                     @include netflix-button;
 
@@ -108,10 +94,6 @@
                         &:hover {
                             background-color: rgba($text-light, 0.3);
                         }
-                    }
-
-                    i {
-                        margin-right: $spacing-xs;
                     }
                 }
             }
@@ -125,18 +107,15 @@
         width: 4rem;
         height: 4rem;
         border-radius: 50%;
-        background-color: white(0, 0, 0, 0.7);
-        color: black;
+        background-color: rgba(0, 0, 0, 0.7);
+        color: white;
         border: none;
         cursor: pointer;
         transition: all $transition-speed;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        z-index: 10;
+        z-index: 1;
 
         &:hover {
-            background-color: white(0, 0, 0, 0.9);
+            background-color: rgba(0, 0, 0, 0.9);
             transform: translateY(-50%) scale(1.1);
         }
 
@@ -157,14 +136,11 @@
 .original-title {
     font-size: $font-sm;
     color: $text-muted;
-    margin-bottom: $spacing-md;
-    font-style: italic;
 }
 
 .rating {
     i {
         color: $star-empty;
-        margin-right: $spacing-xs;
         
         &.filled {
             color: $star-filled;
