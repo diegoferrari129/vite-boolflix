@@ -3,7 +3,6 @@ import Header from './components/layout/Header.vue';
 import Main from './components/layout/Main.vue';
 
 export default {
-    name: 'App',
     components: {
         Header,
         Main
@@ -12,7 +11,7 @@ export default {
 </script>
 
 <template>
-    <Header @search="searchMovies"/>
+    <Header />
     <Main />
 </template>
 

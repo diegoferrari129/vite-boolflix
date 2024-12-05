@@ -1,5 +1,19 @@
-BoolFlix
-(repo: vite-boolflix)
+INTRODUZIONE:
+Progetto svolto durante il corso Full-Stack di Boolean.
+Questa web app sfrutta l'API di TMDB per fornire informazioni dettagliate su film e serie TV.
+
+TECNOLOGIE UTILIZZATE:
+HTML, CSS/Bootstrap, Vue.js
+
+FUNZIONALITà PRINCIPALI:
+Ricerca film e serie TV tramite una barra di ricerca.
+Visualizzazione di dettagli come titolo, lingua, voto e poster.
+Traduzione automatica della lingua in una bandiera nazionale.
+Voti con stelle arrotondati da 1 a 5.
+Hover sulle card per mostrare ulteriori informazioni.
+Filtro per trovare solo le serie tv o solo i film.
+
+TRACCIA:
 In questo esercizio iniziamo a replicare la logica che sta dietro a tantissimi siti che
 permettono la visione di film e telefilm.
 Per fare questo, come fanno siti molto più rinomati, utilizzeremo un API che ci
